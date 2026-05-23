@@ -26,7 +26,7 @@
       </div>
     </header>
     <main class="app-main">
-      <Home />
+      <router-view />
     </main>
     <footer class="app-footer">
       <p>MC Crash Analyzer — 基于 AI 的智能崩溃诊断 &middot; 支持 Java 版所有版本</p>
@@ -43,7 +43,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import Home from './views/Home.vue';
 import AuthModal from './components/AuthModal.vue';
 import { getMe, logout } from './api/index.js';
 import { IconAlertTriangle, IconUser, IconLogOut } from './assets/icons.js';

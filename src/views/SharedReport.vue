@@ -155,17 +155,26 @@ function updateCountdown() {
 }
 
 onMounted(async () => {
+  const shareId = route.params.shareId;
+  console.log('[SharedReport] 开始加载分享:', shareId);
   try {
-    const { data } = await getSharedReport(route.params.shareId);
+    const res = await getSharedReport(shareId);
+    const data = res.data;
+    console.log('[SharedReport] API 返回:', { hasError: !!data.error, hasReport: !!data.report, ttl: data.ttl });
     if (data.error) {
       error.value = data.error;
-    } else {
+    } else if (data.report) {
       report.value = data.report;
       ttlSeconds = data.ttl > 0 ? data.ttl : 0;
       updateCountdown();
       timer = setInterval(updateCountdown, 1000);
+      console.log('[SharedReport] 报告加载成功, report:', report.value);
+    } else {
+      console.warn('[SharedReport] data.report 为空, data:', data);
+      error.value = '报告数据不存在';
     }
   } catch (err) {
+    console.error('[SharedReport] 请求失败:', err);
     error.value = '分享链接不存在或已过期';
   } finally {
     loading.value = false;

@@ -102,10 +102,10 @@ export function createShare(reportId, reportData) {
 }
 
 /**
- * 获取分享的报告
+ * 获取分享的报告（公开接口）
  */
 export function getSharedReport(shareId) {
-  return axios.get(`/api/crash/${shareId}`);
+  return api.get(`/crash/${shareId}`);
 }
 
 export default api;
