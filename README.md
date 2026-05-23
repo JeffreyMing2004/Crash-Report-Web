@@ -2,7 +2,7 @@
 
 # MC Crash Analyzer
 
-**AI-Powered Minecraft Crash Report Analysis — Web Frontend**
+**AI 驱动的 Minecraft 崩溃报告智能分析 — Web 前端**
 
 [![Vue](https://img.shields.io/badge/Vue-3.5-4FC08D?logo=vuedotjs&logoColor=fff)](https://vuejs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=fff)](https://vitejs.dev/)
@@ -13,109 +13,109 @@
 
 ---
 
-## Overview
+## 项目概述
 
-**MC Crash Analyzer** is a single-page web application that provides instant, AI-driven diagnosis of Minecraft crash reports. Users can upload crash log files or paste raw text, and within seconds receive a structured breakdown — error type, severity, root cause, and actionable solutions — all rendered in a clean developer-centric interface.
+**MC Crash Analyzer** 是一个单页 Web 应用，为 Minecraft 崩溃报告提供即时 AI 诊断。用户可上传崩溃日志文件或直接粘贴文本，数秒内即可获得结构化分析结果——包含错误类型、严重程度、根本原因及可操作的修复方案，全部以开发者友好的界面呈现。
 
-Built with Vue 3 Composition API and Vite, the frontend communicates with a Node.js backend over RESTful APIs. It supports file uploads, text input, user authentication, session persistence, and publicly shareable report links.
+前端基于 Vue 3 Composition API + Vite 构建，通过 RESTful API 与 Node.js 后端通信，支持文件上传、文本输入、用户认证、会话持久化及报告公开分享。
 
 ---
 
-## Tech Stack
+## 技术栈
 
-| Layer            | Technology                              |
+| 层级             | 技术                                    |
 | :--------------- | :-------------------------------------- |
-| **Framework**    | [Vue 3.5](https://vuejs.org/) (Composition API, `<script setup>`) |
-| **Bundler**      | [Vite 5](https://vitejs.dev/) (ESM-native, HMR) |
-| **Routing**      | [Vue Router 4](https://router.vuejs.org/) (History mode) |
-| **HTTP Client**  | [Axios](https://axios-http.com/) (interceptors, credentials) |
-| **Typography**   | [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) + [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) |
-| **Icons**        | Lucide-style SVG via Vue `h()` render functions |
-| **Styling**      | Plain CSS with CSS custom properties (design tokens) |
+| **框架**         | [Vue 3.5](https://vuejs.org/)（Composition API，`<script setup>`） |
+| **构建工具**     | [Vite 5](https://vitejs.dev/)（ESM 原生，HMR 热更新） |
+| **路由**         | [Vue Router 4](https://router.vuejs.org/)（History 模式） |
+| **HTTP 客户端**  | [Axios](https://axios-http.com/)（拦截器，自动携带 Cookie） |
+| **字体**         | [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) + [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) |
+| **图标**         | Lucide 风格 SVG，基于 Vue `h()` 渲染函数实现 |
+| **样式**         | 原生 CSS + CSS 自定义属性（设计令牌） |
 
 ---
 
-## Project Structure
+## 目录结构
 
 ```
 client/
-├── index.html                    # SPA entry point, font preloading
-├── vite.config.js                # Vite config with /api proxy
+├── index.html                    # SPA 入口，字体预加载
+├── vite.config.js                # Vite 配置（含 /api 代理）
 ├── package.json
 └── src/
-    ├── main.js                   # createApp + router registration
-    ├── App.vue                   # Shell: StickyHeader, RouterView, Footer, AuthModal
+    ├── main.js                   # 应用入口，注册 Vue + Router
+    ├── App.vue                   # 外壳组件：顶栏 / 路由视图 / 底栏 / 登录弹窗
     ├── api/
-    │   └── index.js              # All backend API calls (11 endpoints)
+    │   └── index.js              # 后端 API 封装（共 12 个接口）
     ├── assets/
-    │   ├── style.css             # Global design tokens & themed components
-    │   └── icons.js              # 20+ SVG icon components (render-function based)
+    │   ├── style.css             # 全局设计令牌与主题样式
+    │   └── icons.js              # 20+ SVG 图标组件（渲染函数实现）
     ├── components/
-    │   ├── AuthModal.vue         # Login/Register modal with form validation
-    │   ├── CrashUploader.vue     # Drag-and-drop file upload zone
-    │   ├── AnalysisResult.vue    # Bento-grid result cards (severity, cause, fix)
-    │   └── HistoryList.vue       # Paginated history with relative timestamps
+    │   ├── AuthModal.vue         # 登录/注册弹窗（含表单校验）
+    │   ├── CrashUploader.vue     # 文件拖拽上传区域
+    │   ├── AnalysisResult.vue    # Bento 网格分析结果卡片
+    │   └── HistoryList.vue       # 历史记录列表（相对时间戳）
     ├── router/
-    │   └── index.js              # Route definitions (2 routes)
+    │   └── index.js              # 路由定义（2 条路由）
     └── views/
-        ├── Home.vue              # Main page: upload/paste tabs + result + history
-        └── SharedReport.vue      # Public share view with TTL countdown
+        ├── Home.vue              # 主页：上传/粘贴切换 + 结果 + 历史
+        └── SharedReport.vue      # 公开分享报告页（含有效期倒计时）
 ```
 
 ---
 
-## Routing
+## 路由
 
-| Path               | Component         | Auth Required | Description                     |
-| :----------------- | :---------------- | :-----------: | :------------------------------ |
-| `/`                | `Home`            |      No       | Upload, paste, analyze, history |
-| `/crash/:shareId`  | `SharedReport`    |      No       | Public shared report with expiry |
-
----
-
-## API Reference
-
-All backend requests are proxied through `/api` in development. The `axios` instance is configured with `withCredentials: true` and a 120-second timeout for long-running AI analysis.
-
-### Analysis Endpoints
-
-| Method   | Path                    | Description              |
-| :------- | :---------------------- | :----------------------- |
-| `POST`   | `/api/analyze/file`     | Upload crash report file (multipart) |
-| `POST`   | `/api/analyze/text`     | Submit crash report text |
-| `GET`    | `/api/analyze/history`  | List user's analysis history |
-| `GET`    | `/api/analyze/history/:id` | Get single analysis detail |
-| `DELETE` | `/api/analyze/history/:id` | Delete history record |
-| `GET`    | `/api/analyze/health`   | Health check |
-
-### Auth Endpoints
-
-| Method | Path                   | Description              |
-| :----- | :--------------------- | :----------------------- |
-| `POST` | `/api/auth/register`   | Create account           |
-| `POST` | `/api/auth/login`      | Session login            |
-| `POST` | `/api/auth/logout`     | Destroy session          |
-| `GET`  | `/api/auth/me`         | Get current user         |
-| `GET`  | `/api/auth/wechat/qrcode` | WeChat OAuth QR code  |
-| `GET`  | `/api/auth/wechat/status`  | Poll WeChat login status |
-
-### Share Endpoint
-
-| Method | Path                  | Description             |
-| :----- | :-------------------- | :---------------------- |
-| `GET`  | `/api/crash/:shareId` | Fetch public shared report |
+| 路径               | 组件              | 需登录 | 说明                     |
+| :----------------- | :---------------- | :----: | :----------------------- |
+| `/`                | `Home`            |   否   | 上传、粘贴、分析、历史   |
+| `/crash/:shareId`  | `SharedReport`    |   否   | 公开分享报告（含过期机制） |
 
 ---
 
-## Getting Started
+## API 接口
 
-### Prerequisites
+开发环境下，所有 `/api/*` 请求由 Vite 代理转发至 `http://localhost:3000`。Axios 实例配置了 `withCredentials: true` 及 120 秒超时（适配 AI 分析长耗时）。
+
+### 分析类接口
+
+| 方法     | 路径                      | 说明                     |
+| :------- | :------------------------ | :----------------------- |
+| `POST`   | `/api/analyze/file`       | 上传崩溃报告文件（multipart） |
+| `POST`   | `/api/analyze/text`       | 提交崩溃报告文本         |
+| `GET`    | `/api/analyze/history`    | 获取当前用户分析历史     |
+| `GET`    | `/api/analyze/history/:id` | 获取单条分析详情         |
+| `DELETE` | `/api/analyze/history/:id` | 删除历史记录             |
+| `GET`    | `/api/analyze/health`     | 健康检查                 |
+
+### 认证类接口
+
+| 方法   | 路径                     | 说明                  |
+| :----- | :----------------------- | :-------------------- |
+| `POST` | `/api/auth/register`     | 注册账号              |
+| `POST` | `/api/auth/login`        | 会话登录              |
+| `POST` | `/api/auth/logout`       | 退出登录              |
+| `GET`  | `/api/auth/me`           | 获取当前登录用户      |
+| `GET`  | `/api/auth/wechat/qrcode` | 获取微信扫码登录二维码 |
+| `GET`  | `/api/auth/wechat/status` | 轮询微信扫码状态      |
+
+### 分享类接口
+
+| 方法   | 路径                    | 说明                 |
+| :----- | :---------------------- | :------------------- |
+| `GET`  | `/api/crash/:shareId`   | 获取公开分享的报告   |
+
+---
+
+## 快速开始
+
+### 环境要求
 
 - **Node.js** >= 18.0.0
 - **npm** >= 9.0.0
-- Backend service running at `http://localhost:3000`
+- 后端服务已启动在 `http://localhost:3000`
 
-### Installation
+### 安装
 
 ```bash
 git clone https://github.com/JeffreyMing2004/Crash-Report-Web.git
@@ -123,55 +123,55 @@ cd Crash-Report-Web/client
 npm install
 ```
 
-### Development
+### 开发
 
 ```bash
 npm run dev
 ```
 
-The dev server starts at `http://localhost:5173` with Hot Module Replacement. All `/api/*` requests are automatically proxied to `http://localhost:3000`.
+开发服务器启动于 `http://localhost:5173`，支持热模块替换（HMR）。所有 `/api/*` 请求自动代理至 `http://localhost:3000`。
 
-### Production Build
+### 生产构建
 
 ```bash
-# Build for production
+# 生产环境构建
 npm run build
 
-# Preview the built output locally
+# 本地预览构建产物
 npm run preview
 ```
 
-The output is in `dist/` — a static bundle ready for any HTTP server or CDN.
+构建产物输出至 `dist/` 目录，为纯静态文件，可部署至任意 HTTP 服务器或 CDN。
 
 ---
 
-## Component Reference
+## 组件文档
 
 ### `<CrashUploader>`
 
-File upload zone with drag-and-drop support.
+文件上传区域，支持拖拽和点击选择。
 
-| Prop      | Type      | Default | Description              |
-| :-------- | :-------- | :------ | :----------------------- |
-| `loading` | `Boolean` | `false` | Disables interaction during analysis |
+| Prop      | 类型      | 默认值  | 说明                   |
+| :-------- | :-------- | :------ | :--------------------- |
+| `loading` | `Boolean` | `false` | 分析进行中时禁用交互   |
 
-| Event     | Payload  | Description                 |
-| :-------- | :------- | :-------------------------- |
-| `analyze` | `File`   | Emitted when user triggers analysis |
+| 事件      | 载荷    | 说明                 |
+| :-------- | :------ | :------------------- |
+| `analyze` | `File`  | 用户触发分析时发出   |
 
 ### `<AnalysisResult>`
 
-Structured display of AI analysis output.
+AI 分析结果的结构化展示。
 
-| Prop     | Type     | Description              |
+| Prop     | 类型     | 说明                     |
 | :------- | :------- | :----------------------- |
-| `result` | `Object` | Full analysis response from backend |
+| `result` | `Object` | 后端返回的完整分析响应   |
 
-| Event   | Description                |
-| :------ | :------------------------- |
-| `close` | Dismiss the result display |
+| 事件    | 说明             |
+| :------ | :--------------- |
+| `close` | 关闭结果展示     |
 
-**`result` object shape:**
+**`result` 对象结构：**
 
 ```typescript
 interface AnalysisResult {
@@ -200,96 +200,96 @@ interface AnalysisResult {
 
 ### `<HistoryList>`
 
-Analysis history with relative timestamps and severity indicators.
+分析历史列表，支持相对时间戳与严重程度标记。
 
-| Prop      | Type      | Description              |
-| :-------- | :-------- | :----------------------- |
-| `items`   | `Array`   | History records from API |
-| `loading` | `Boolean` | Loading state            |
+| Prop      | 类型      | 说明             |
+| :-------- | :-------- | :--------------- |
+| `items`   | `Array`   | 后端返回的历史记录 |
+| `loading` | `Boolean` | 加载状态          |
 
-| Event     | Payload      | Description            |
-| :-------- | :----------- | :--------------------- |
-| `view`    | `id: string` | User clicked a record  |
-| `delete`  | `id: string` | User requested delete  |
-| `refresh` | —            | Manual refresh trigger |
+| 事件      | 载荷          | 说明               |
+| :-------- | :------------ | :----------------- |
+| `view`    | `id: string`  | 点击查看某条记录   |
+| `delete`  | `id: string`  | 请求删除某条记录   |
+| `refresh` | —             | 手动触发刷新       |
 
 ### `<AuthModal>`
 
-Login/Register modal with client-side validation.
+登录/注册弹窗，含客户端表单校验。
 
-| Prop      | Type      | Description              |
-| :-------- | :-------- | :----------------------- |
-| `visible` | `Boolean` | Controls modal visibility |
+| Prop      | 类型      | 说明             |
+| :-------- | :-------- | :--------------- |
+| `visible` | `Boolean` | 控制弹窗显隐     |
 
-| Event           | Payload        | Description               |
-| :-------------- | :------------- | :------------------------ |
-| `close`         | —              | Modal dismissed           |
-| `login-success` | `User: Object` | Successful authentication |
-
----
-
-## Design System
-
-The UI follows an **OLED Dark + Vibrant Block-based** design language optimized for developer tools.
-
-| Token               | Value      | Usage              |
-| :------------------ | :--------- | :----------------- |
-| `--bg-deep`         | `#020617`  | Page background    |
-| `--bg`              | `#0F172A`  | Section background |
-| `--bg-card`         | `#1E293B`  | Card / modal bg    |
-| `--primary`         | `#22C55E`  | CTA, accents, glow |
-| `--text`            | `#F8FAFC`  | Primary text       |
-| `--text-secondary`  | `#94A3B8`  | Secondary text     |
-| `--text-muted`      | `#64748B`  | Placeholder / hint |
-| `--font-mono`       | JetBrains Mono | Headings, code, badges |
-| `--font-sans`       | IBM Plex Sans  | Body text, forms, UI |
-
-### Accessibility
-
-- All interactive elements have visible `:focus-visible` outlines
-- `prefers-reduced-motion` is respected globally
-- Color contrast meets WCAG AA (4.5:1 minimum)
-- Icons are inline SVG, rendered via `h()` — no external icon font dependencies
-
-### Responsive Breakpoints
-
-| Breakpoint | Target          |
-| :--------- | :-------------- |
-| 375px      | Small phones    |
-| 640px      | Large phones    |
-| 768px      | Tablets         |
-| 1024px     | Small desktops  |
-| 1440px     | Large desktops  |
+| 事件            | 载荷            | 说明               |
+| :-------------- | :-------------- | :----------------- |
+| `close`         | —               | 关闭弹窗           |
+| `login-success` | `User: Object`  | 登录/注册成功      |
 
 ---
 
-## Icon System
+## 设计系统
 
-All icons are Lucide-style SVGs implemented as Vue functional components using the `h()` render function — no runtime template compiler required. This keeps the bundle lean and avoids external icon dependencies.
+UI 采用 **OLED 暗色 + 块状布局** 设计语言，专为开发者工具优化。
+
+| 令牌               | 色值       | 用途               |
+| :----------------- | :--------- | :----------------- |
+| `--bg-deep`        | `#020617`  | 页面底层背景       |
+| `--bg`             | `#0F172A`  | 区块背景           |
+| `--bg-card`        | `#1E293B`  | 卡片、弹窗背景     |
+| `--primary`        | `#22C55E`  | 按钮、强调色、辉光 |
+| `--text`           | `#F8FAFC`  | 主文字             |
+| `--text-secondary` | `#94A3B8`  | 辅助文字           |
+| `--text-muted`     | `#64748B`  | 占位符、提示文字   |
+| `--font-mono`      | JetBrains Mono | 标题、代码、标签 |
+| `--font-sans`      | IBM Plex Sans  | 正文、表单、UI  |
+
+### 可访问性
+
+- 所有可交互元素均有 `:focus-visible` 轮廓
+- 全局遵循 `prefers-reduced-motion` 偏好
+- 颜色对比度满足 WCAG AA 标准（最低 4.5:1）
+- 图标均为内联 SVG，通过 `h()` 渲染，无外部图标字体依赖
+
+### 响应式断点
+
+| 断点     | 目标设备         |
+| :------- | :--------------- |
+| 375px    | 小屏手机         |
+| 640px    | 大屏手机         |
+| 768px    | 平板             |
+| 1024px   | 小型桌面显示器   |
+| 1440px   | 大型桌面显示器   |
+
+---
+
+## 图标系统
+
+全部图标采用 Lucide 风格 SVG，基于 Vue `h()` 渲染函数实现为函数式组件，无需运行时模板编译器，保持打包体积精简且无外部图标依赖。
 
 ```js
-// Example usage
+// 使用示例
 import { IconUpload, IconSparkles } from './assets/icons.js';
 ```
 
-Available icons: `IconAlertCircle`, `IconAlertTriangle`, `IconBarChart3`, `IconBookOpen`, `IconBot`, `IconClipboard`, `IconClock`, `IconFileText`, `IconFolderOpen`, `IconLightbulb`, `IconLogIn`, `IconLogOut`, `IconPuzzle`, `IconRefreshCw`, `IconScrollText`, `IconSearch`, `IconSettings`, `IconShare`, `IconSparkles`, `IconTarget`, `IconTrash2`, `IconUpload`, `IconUser`, `IconX`.
+可用图标：`IconAlertCircle`、`IconAlertTriangle`、`IconBarChart3`、`IconBookOpen`、`IconBot`、`IconClipboard`、`IconClock`、`IconFileText`、`IconFolderOpen`、`IconLightbulb`、`IconLogIn`、`IconLogOut`、`IconPuzzle`、`IconRefreshCw`、`IconScrollText`、`IconSearch`、`IconSettings`、`IconShare`、`IconSparkles`、`IconTarget`、`IconTrash2`、`IconUpload`、`IconUser`、`IconX`。
 
 ---
 
-## Deployment
+## 部署
 
-### Static Hosting
+### 静态托管
 
-This is a pure SPA with client-side routing. Deploy the `dist/` directory to any static host:
+本项目为纯 SPA，使用客户端路由。将 `dist/` 部署至任意静态服务即可：
 
 ```bash
 npm run build
-# Upload dist/ to your CDN or web server
+# 将 dist/ 上传至 CDN 或 Web 服务器
 ```
 
-**Important:** Configure your web server to serve `index.html` for all routes (SPA fallback) to support Vue Router history mode.
+**注意：** 需配置 Web 服务器将所有路由回退至 `index.html`（SPA fallback），以支持 Vue Router 的 History 模式。
 
-**Nginx example:**
+**Nginx 配置示例：**
 
 ```nginx
 location / {
@@ -299,6 +299,6 @@ location / {
 
 ---
 
-## License
+## 许可证
 
-MIT © 2024
+MIT © 2026
