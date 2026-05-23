@@ -37,6 +37,8 @@
         <span class="footer-divider">|</span>
         <span>托管于：抚州明像素网络科技有限公司</span>
         <span class="footer-divider">|</span>
+        <span>version:1.0.0</span>
+        <span class="footer-divider">|</span>
         <a :href="ISSUES_URL" target="_blank" rel="noopener" class="footer-issues-link">
           <IconBug /> 问题反馈
         </a>
