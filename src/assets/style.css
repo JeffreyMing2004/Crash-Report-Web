@@ -363,6 +363,21 @@ body {
   background: var(--color-accent-soft);
 }
 
+.footer-beian {
+  gap: var(--space-2);
+  font-size: 11px;
+}
+
+.footer-beian-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer-beian-link:hover {
+  color: var(--color-accent);
+}
+
 /* ================================================================
    4. HOME PAGE
    ================================================================ */

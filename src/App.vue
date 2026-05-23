@@ -44,6 +44,13 @@
           <IconExternalLink /> GitHub Issues
         </a>
       </div>
+      <div class="footer-row footer-beian">
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="footer-beian-link">赣ICP备2025075011号-1</a>
+        <span class="footer-divider">|</span>
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36100202000667" target="_blank" rel="noopener" class="footer-beian-link">
+          赣公网安备36100202000667号
+        </a>
+      </div>
     </footer>
 
     <AuthModal
